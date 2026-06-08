@@ -78,38 +78,38 @@ build:
 		sed -i 's/ display: none;//g' $(BUILD_PATH)/webroot/js/pages/home/index.html; \
 	fi
 
-	@rm -rf ../build/TreatWheel.zip
-	@(cd $(BUILD_PATH) && zip -r ../TreatWheel.zip .) > /dev/null
+	@rm -rf ../build/BreWheel.zip
+	@(cd $(BUILD_PATH) && zip -r ../BreWheel.zip .) > /dev/null
 
 clean:
 	@echo Cleaning build artifacts...
 	@rm -rf $(BUILD_PATH)/cmd
 	@rm -rf $(BUILD_PATH)/zygisk
 	@rm -rf $(BUILD_PATH)/webroot
-	@rm -rf ../build/TreatWheel.zip > /dev/null
+	@rm -rf ../build/BreWheel.zip > /dev/null
 
 debug: CFLAGS += -DDEBUG -O0 -g
 debug: build
 
 pushToDevice:
 	@echo Pushing to device...
-	@adb push build/TreatWheel.zip /data/local/tmp/TreatWheel.zip
+	@adb push build/BreWheel.zip /data/local/tmp/BreWheel.zip
 
 installKsuOnly: pushToDevice
 	@echo Installing with KSU...
-	@adb shell su -c /data/adb/ksu/bin/ksud module install /data/local/tmp/TreatWheel.zip
+	@adb shell su -c /data/adb/ksu/bin/ksud module install /data/local/tmp/BreWheel.zip
 	@echo Rebooting...
 	@adb reboot
 
 installMagiskOnly: pushToDevice
 	@echo Installing with Magisk...
-	@adb shell su -c /debug_ramdisk/magisk --install-module /data/local/tmp/TreatWheel.zip
+	@adb shell su -c /debug_ramdisk/magisk --install-module /data/local/tmp/BreWheel.zip
 	@echo Rebooting...
 	@adb reboot
 
 installApatchOnly: pushToDevice
 	@echo Installing with Apatch...
-	@adb shell su -c /data/adb/apd module install /data/local/tmp/TreatWheel.zip
+	@adb shell su -c /data/adb/apd module install /data/local/tmp/BreWheel.zip
 	@echo Rebooting...
 	@adb reboot
 
