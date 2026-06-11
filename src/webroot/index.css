@@ -77,13 +77,13 @@
   animation: openNav 0.15s;
 }
 
-@media (min-width:961px)  {
+@media (min-width:0px)  {
   #navbar {
     background-color: var(--desktop-navbar);
-    transform: scale(0.85);
+    transform: scale(1.2);
     left: auto; 
     right: auto;
-    margin-bottom: 15px;
+    margin-bottom: 60px;
     border-radius: 60px;
     padding: 10px 10px;
   }
