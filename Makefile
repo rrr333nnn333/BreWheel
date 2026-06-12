@@ -11,7 +11,7 @@ CFLAGS = -llog -fvisibility=hidden -fvisibility-inlines-hidden -Wpedantic     \
          -Wno-gnu-zero-variadic-macro-arguments                               \
 		 -Wno-gnu-statement-expression-from-macro-expansion
 
-.PHONY: all build debug pushToDevice installKsuOnly installMagiskOnly installApatchOnly installKsu installMagisk installApatch installKsuDebug installMagiskDebug installApatchDebug updateWebUI
+.PHONY: all build debug pushToDevice installKsuOnly installApatchOnly installKsu installApatch installKsuDebug installApatchDebug updateWebUI
 
 ifeq ($(IS_GITHUB_ACTION),true)
 CC := $(ANDROID_NDK_HOME)/toolchains/llvm/prebuilt/linux-x86_64/bin/clang
@@ -102,12 +102,6 @@ installKsuOnly: pushToDevice
 	@echo Rebooting...
 	@adb reboot
 
-installMagiskOnly: pushToDevice
-	@echo Installing with Magisk...
-	@adb shell su -c /debug_ramdisk/magisk --install-module /data/local/tmp/BreWheel.zip
-	@echo Rebooting...
-	@adb reboot
-
 installApatchOnly: pushToDevice
 	@echo Installing with Apatch...
 	@adb shell su -c /data/adb/apd module install /data/local/tmp/BreWheel.zip
@@ -117,17 +111,11 @@ installApatchOnly: pushToDevice
 installKsu: all
 installKsu: installKsuOnly
 
-installMagisk: all
-installMagisk: installMagiskOnly
-
 installApatch: all
 installApatch: installApatchOnly
 
 installKsuDebug: debug
 installKsuDebug: installKsuOnly
-
-installMagiskDebug: debug
-installMagiskDebug: installMagiskOnly
 
 installApatchDebug: debug
 installApatchDebug: installApatchOnly

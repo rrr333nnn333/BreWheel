@@ -55,7 +55,6 @@ async function _usedRootImpl() {
   let providers = {
     KSU: false,
     APatch: false,
-    Magisk: false
   }
 
   /* TODO: Use cmd to do prctl KSU detection */
@@ -70,29 +69,9 @@ async function _usedRootImpl() {
     if (apdExists.errno === 0) providers.APatch = true
   }
 
-  {
-    const magiskFiles = [
-      '/sbin/magisk32', '/sbin/magisk64',
-      '/sbin/magisk',
-      '/debug_ramdisk/magisk32', '/debug_ramdisk/magisk64',
-      '/debug_ramdisk/magisk'
-    ]
-
-    for (let i = 0; i < magiskFiles.length; i++) {
-      const fileExists = await exec(`${magiskFiles[i]} -V`)
-      if (fileExists.errno === 0) {
-        providers.Magisk = true
-
-        break
-      }
-    }
-  }
-
   /* TODO: New warning if it's multiple */
-  if ((providers.KSU) + (providers.APatch) + (providers.Magisk) > 1) return 'Multiple'
   if (providers.KSU) return 'KernelSU'
   if (providers.APatch) return 'APatch'
-  if (providers.Magisk) return 'Magisk'
 
   return false
 }
