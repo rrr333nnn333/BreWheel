@@ -83,7 +83,6 @@ struct module_state {
   bool disable_maps_hiding;
   bool disable_revanced_mounts_umount;
   bool disable_custom_font_loading;
-  bool disable_denylist_logic_inversion;
   bool disable_module_loading_traces_hiding;
   bool disable_frida_traces_hiding;
 };

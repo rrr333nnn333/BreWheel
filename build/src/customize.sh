@@ -164,8 +164,4 @@ if ! grep -q "disable_revanced_mounts_umount=true" "/data/adb/treat_wheel/state"
   echo "disable_revanced_mounts_umount=true" >> "/data/adb/treat_wheel/state"
 fi
 
-if ! grep -q "disable_denylist_logic_inversion=true" "/data/adb/treat_wheel/state"; then
-  echo "disable_denylist_logic_inversion=true" >> "/data/adb/treat_wheel/state"
-fi
-
 ui_print "- Welcome to Treat Wheel $VERSION"
