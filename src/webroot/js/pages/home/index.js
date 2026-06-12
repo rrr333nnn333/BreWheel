@@ -53,8 +53,7 @@ async function _getVersion() {
 
 async function _usedRootImpl() {
   let providers = {
-    KSU: false,
-    APatch: false,
+    KSU: false
   }
 
   /* TODO: Use cmd to do prctl KSU detection */
@@ -64,14 +63,7 @@ async function _usedRootImpl() {
     if (ksuVersion.errno === 0 && ksuVersion.stdout !== 'Kernel Version: 0') providers.KSU = true
   }
 
-  {
-    let apdExists = await exec('/data/adb/apd --help')
-    if (apdExists.errno === 0) providers.APatch = true
-  }
-
-  /* TODO: New warning if it's multiple */
   if (providers.KSU) return 'KernelSU'
-  if (providers.APatch) return 'APatch'
 
   return false
 }
