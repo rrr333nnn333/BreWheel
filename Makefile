@@ -113,7 +113,6 @@ analyze_arch:
 
 installModule: build
 	$(ADB_PUSH) build/BreWheel.zip /data/local/tmp
-	@$(ADB_SHELL)su -M -c "magisk --install-module /data/local/tmp/BreWheel.zip 2&>/dev/null"|| \
 	$(ADB_SHELL)su -c "ksud module install /data/local/tmp/BreWheel.zip 2&>/dev/null"||        \
 	$(ADB_SHELL)su -c "apd module install /data/local/tmp/BreWheel.zip 2&>/dev/null"           \
 	&& $(ADB_SHELL)su -c rm /data/local/tmp/BreWheel.zip                                       \
