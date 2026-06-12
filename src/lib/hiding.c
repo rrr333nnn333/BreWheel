@@ -392,32 +392,6 @@ int do_custom_font_loading(struct api_table *api_table, JNIEnv *tw_env) {
   return 1;
 }
 
-int do_denylist_logic_inversion(struct api_table *api_table, JNIEnv *tw_env, enum process_flags flags) {
-  (void) api_table; (void) tw_env;
-
-  LOGI("DLI: Denylist logic inversion is enabled, inverting logic.");
-
-  if ((flags & PROCESS_IS_MANAGER) == PROCESS_IS_MANAGER) {
-    LOGI("DLI: Process is Root Manager, skipping.");
-
-    return 1;
-  }
-
-  if ((flags & PROCESS_ON_DENYLIST) == PROCESS_ON_DENYLIST) {
-    LOGI("DLI: Process is on denylist, setting mount namespace to Mounted.");
-
-    update_mnt_ns(Mounted);
-  } else {
-    LOGI("DLI: Process is not on denylist, setting mount namespace to Clean.");
-
-    update_mnt_ns(Clean);
-  }
-
-  LOGI("DLI: Finished inverting denylist logic.");
-
-  return 1;
-}
-
 struct AtExitEntry {
   void (*func_ptr)(void*);
   void *arg;

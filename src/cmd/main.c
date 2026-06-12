@@ -54,10 +54,6 @@ int main(void) {
       state.disable_custom_font_loading = strncmp(line + strlen("disable_custom_font_loading="), "true", strlen("true")) == 0;
 
       LOGI("Found disable_custom_font_loading state: %d", state.disable_custom_font_loading);
-    } else if (str_starts_with(line, "disable_denylist_logic_inversion=")) {
-      state.disable_denylist_logic_inversion = strncmp(line + strlen("disable_denylist_logic_inversion="), "true", strlen("true")) == 0;
-
-      LOGI("Found disable_denylist_logic_inversion state: %d", state.disable_denylist_logic_inversion);
     } else if (str_starts_with(line, "disable_module_loading_traces_hiding=")) {
       state.disable_module_loading_traces_hiding = strncmp(line + strlen("disable_module_loading_traces_hiding="), "true", strlen("true")) == 0;
 

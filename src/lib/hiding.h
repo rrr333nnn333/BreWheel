@@ -19,8 +19,6 @@ int do_revanced_mounts_umount(struct api_table *api_table, JNIEnv *tw_env, const
 
 int do_custom_font_loading(struct api_table *api_table, JNIEnv *tw_env);
 
-int do_denylist_logic_inversion(struct api_table *api_table, JNIEnv *tw_env, enum process_flags flags);
-
 int do_atexit_hiding(struct api_table *api_table, JNIEnv *tw_env);
 
 int do_frida_hiding(struct api_table *api_table, JNIEnv *tw_env);

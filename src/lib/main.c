@@ -55,8 +55,8 @@ int my_munmap(void *addr, size_t length) {
       goto finish_hiding_post;
     }
 
-    if (!(((flags & PROCESS_ON_DENYLIST) == PROCESS_ON_DENYLIST && g_state.disable_denylist_logic_inversion) || 
-        ((flags & PROCESS_ON_DENYLIST) != PROCESS_ON_DENYLIST && !g_state.disable_denylist_logic_inversion))) {
+    if (!(((flags & PROCESS_ON_DENYLIST) == PROCESS_ON_DENYLIST) || 
+        ((flags & PROCESS_ON_DENYLIST) != PROCESS_ON_DENYLIST))) {
       LOGD("Process not on denylist, nothing to do in deconstruction.");
 
       goto finish_hiding_post;
@@ -134,8 +134,8 @@ void preSpecialize(const char *process_name) {
   /* INFO: Part of module status system */
 
   flags = api_table->getFlags(api_table->impl);
-  if (((flags & PROCESS_ON_DENYLIST) == PROCESS_ON_DENYLIST && g_state.disable_denylist_logic_inversion) || 
-      ((flags & PROCESS_ON_DENYLIST) != PROCESS_ON_DENYLIST && !g_state.disable_denylist_logic_inversion)) {
+  if (((flags & PROCESS_ON_DENYLIST) == PROCESS_ON_DENYLIST) || 
+      ((flags & PROCESS_ON_DENYLIST) != PROCESS_ON_DENYLIST)) {
     LOGI("Process is on denylist, cleaning extended traces.");
 
     if (!g_state.disable_gsi_hiding && !do_gsi_hiding(api_table, tw_env)) return;
@@ -145,12 +145,8 @@ void preSpecialize(const char *process_name) {
     if (!g_state.disable_frida_traces_hiding && !do_frida_hiding(api_table, tw_env)) return;
   }
 
-  if (!g_state.disable_denylist_logic_inversion) {
-    if (!do_denylist_logic_inversion(api_table, tw_env, flags)) return;
-  }
-
-  if (((flags & PROCESS_ON_DENYLIST) == PROCESS_ON_DENYLIST && g_state.disable_denylist_logic_inversion) || 
-      ((flags & PROCESS_ON_DENYLIST) != PROCESS_ON_DENYLIST && !g_state.disable_denylist_logic_inversion)) {
+  if (((flags & PROCESS_ON_DENYLIST) == PROCESS_ON_DENYLIST) || 
+      ((flags & PROCESS_ON_DENYLIST) != PROCESS_ON_DENYLIST)) {
     if (!g_state.disable_revanced_mounts_umount && !do_revanced_mounts_umount(api_table, tw_env, process_name)) return;
   }
 }
@@ -346,10 +342,6 @@ void zygisk_companion_entry(int module_fd) {
           state.disable_custom_font_loading = strncmp(line + strlen("disable_custom_font_loading="), "true", strlen("true")) == 0;
 
           LOGI("Found disable_custom_font_loading state: %d", state.disable_custom_font_loading);
-        } else if (str_starts_with(line, "disable_denylist_logic_inversion=")) {
-          state.disable_denylist_logic_inversion = strncmp(line + strlen("disable_denylist_logic_inversion="), "true", strlen("true")) == 0;
-
-          LOGI("Found disable_denylist_logic_inversion state: %d", state.disable_denylist_logic_inversion);
         } else if (str_starts_with(line, "disable_module_loading_traces_hiding=")) {
           state.disable_module_loading_traces_hiding = strncmp(line + strlen("disable_module_loading_traces_hiding="), "true", strlen("true")) == 0;
 
