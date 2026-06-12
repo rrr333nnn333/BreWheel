@@ -6,7 +6,7 @@ const developmentResponse = {
   },
   'cat /data/adb/treat_wheel/state': {
     errno: 0,
-    stdout: 'disable_revanced_mounts_umount=true\ndisable_denylist_logic_inversion=true',
+    stdout: 'disable_revanced_mounts_umount=true',
     stderr: ''
   },
   'cat /data/adb/treat_wheel/status': {

@@ -12,7 +12,6 @@ function _writeState(HidingState) {
   if (HidingState.isMapsHiding) state += 'disable_maps_hiding=true\n'
   if (HidingState.isRevancedMountsUmount) state += 'disable_revanced_mounts_umount=true\n'
   if (HidingState.isCustomFontLoading) state += 'disable_custom_font_loading=true\n'
-  if (HidingState.isDenylistLogicInversion) state += 'disable_denylist_logic_inversion=true\n'
   if (HidingState.isModuleLoadingTracesHiding) state += 'disable_module_loading_traces_hiding=true\n'
   if (HidingState.isFridaTracesHiding) state += 'disable_frida_traces_hiding=true\n'
 
@@ -27,7 +26,6 @@ const HidingState = {
   isMapsHiding: false,
   isRevancedMountsUmount: false,
   isCustomFontLoading: false,
-  isDenylistLogicInversion: false,
   isModuleLoadingTracesHiding: false,
   isFridaTracesHiding: false
 }
@@ -50,7 +48,6 @@ export async function loadOnce() {
     if (line.startsWith('disable_maps_hiding=')) HidingState.isMapsHiding = line.split('=')[1] === 'true'
     if (line.startsWith('disable_revanced_mounts_umount=')) HidingState.isRevancedMountsUmount = line.split('=')[1] === 'true'
     if (line.startsWith('disable_custom_font_loading=')) HidingState.isCustomFontLoading = line.split('=')[1] === 'true'
-    if (line.startsWith('disable_denylist_logic_inversion=')) HidingState.isDenylistLogicInversion = line.split('=')[1] === 'true'
     if (line.startsWith('disable_module_loading_traces_hiding=')) HidingState.isModuleLoadingTracesHiding = line.split('=')[1] === 'true'
     if (line.startsWith('disable_frida_traces_hiding=')) HidingState.isFridaTracesHiding = line.split('=')[1] === 'true'
   })
@@ -64,7 +61,6 @@ export async function loadOnceView() {
   const tw_disable_maps_hiding_switch = document.getElementById('tw_disable_maps_hiding_switch')
   const tw_disable_revanced_mounts_umount_switch = document.getElementById('tw_disable_revanced_mounts_umount_switch')
   const tw_disable_custom_font_loading_switch = document.getElementById('tw_disable_custom_font_loading_switch')
-  const tw_disable_denylist_logic_inversion_switch = document.getElementById('tw_disable_denylist_logic_inversion_switch')
   const tw_disable_module_loading_traces_hiding_switch = document.getElementById('tw_disable_module_loading_traces_hiding_switch')
   const tw_disable_frida_traces_hiding_switch = document.getElementById('tw_disable_frida_traces_hiding_switch')
 
@@ -75,7 +71,6 @@ export async function loadOnceView() {
   if (HidingState.isMapsHiding) tw_disable_maps_hiding_switch.checked = true
   if (HidingState.isRevancedMountsUmount) tw_disable_revanced_mounts_umount_switch.checked = true
   if (HidingState.isCustomFontLoading) tw_disable_custom_font_loading_switch.checked = true
-  if (HidingState.isDenylistLogicInversion) tw_disable_denylist_logic_inversion_switch.checked = true
   if (HidingState.isModuleLoadingTracesHiding) tw_disable_module_loading_traces_hiding_switch.checked = true
   if (HidingState.isFridaTracesHiding) tw_disable_frida_traces_hiding_switch.checked = true
 
@@ -94,13 +89,6 @@ export async function loadOnceView() {
   for (let i = 1; i < action_card.length; i++) {
     action_card[i].style.opacity = sliders[i].style.opacity = HidingState.isIgnoring ? 0.5 : 1
   }
-
-  if (globalThis.rootInfo.impl !== 'Magisk' && HidingState.isDenylistLogicInversion) {
-    tw_disable_denylist_logic_inversion_switch.disabled = true
-    tw_disable_denylist_logic_inversion_switch.parentElement.style.opacity = 0.5
-  } else {
-    tw_disable_denylist_logic_inversion_switch.disabled = HidingState.isIgnoring
-  }
 }
 
 export async function onceViewAfterUpdate() {
@@ -115,7 +103,6 @@ export async function load() {
   const tw_disable_maps_hiding_switch = document.getElementById('tw_disable_maps_hiding_switch')
   const tw_disable_revanced_mounts_umount_switch = document.getElementById('tw_disable_revanced_mounts_umount_switch')
   const tw_disable_custom_font_loading_switch = document.getElementById('tw_disable_custom_font_loading_switch')
-  const tw_disable_denylist_logic_inversion_switch = document.getElementById('tw_disable_denylist_logic_inversion_switch')
   const tw_disable_module_loading_traces_hiding_switch = document.getElementById('tw_disable_module_loading_traces_hiding_switch')
   const tw_disable_frida_traces_hiding_switch = document.getElementById('tw_disable_frida_traces_hiding_switch')
 
@@ -138,13 +125,6 @@ export async function load() {
 
     for (let i = 1; i < action_card.length; i++) {
       action_card[i].style.opacity = sliders[i].style.opacity = HidingState.isIgnoring ? 0.5 : 1
-    }
-
-    if (globalThis.rootInfo.impl !== 'Magisk' && HidingState.isDenylistLogicInversion) {
-      tw_disable_denylist_logic_inversion_switch.disabled = true
-      tw_disable_denylist_logic_inversion_switch.parentElement.style.opacity = 0.5
-    } else {
-      tw_disable_denylist_logic_inversion_switch.disabled = HidingState.isIgnoring
     }
   }
 
@@ -194,19 +174,6 @@ export async function load() {
   utils.addListener(tw_disable_custom_font_loading_switch, 'click', async () => {
     HidingState.isCustomFontLoading = !HidingState.isCustomFontLoading
     _resetStatus()
-
-    await _writeState(HidingState)
-  })
-
-  utils.addListener(tw_disable_denylist_logic_inversion_switch, 'click', async () => {
-    HidingState.isDenylistLogicInversion = !HidingState.isDenylistLogicInversion
-    _resetStatus()
-
-    /* INFO: Only meant for Magisk */
-    if (globalThis.rootInfo.impl !== 'Magisk') {
-      tw_disable_denylist_logic_inversion_switch.disabled = true
-      tw_disable_denylist_logic_inversion_switch.parentElement.style.opacity = 0.5
-    }
 
     await _writeState(HidingState)
   })
